@@ -1,17 +1,16 @@
 package com.augenss.routes
 
-import com.augenss.model.User
-import com.augenss.persistence.saveUserToDb
+import com.augenss.dto.UserDto
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Route.createOrUpdateUser() {
-    put("/createOrUpdateUser") {
-        val user = call.receive<User>()
-        saveUserToDb(user)
+fun Route.createUser() {
+    post("/createUser") {
+        val user = call.receive<UserDto>()
+//        saveUserToDb(user)
         call.respondText("Customer stored correctly", status = HttpStatusCode.Accepted)
     }
 }
@@ -24,7 +23,7 @@ fun Route.getUsers() {
 
 fun Application.registerUserRoutes() {
     routing {
-        createOrUpdateUser()
+        createUser()
         getUsers()
     }
 }
