@@ -1,30 +1,46 @@
 package com.augenss.routes
 
-import com.augenss.model.User
-import com.augenss.persistence.saveUserToDb
 import io.ktor.application.*
 import io.ktor.http.*
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Route.createOrUpdateUser() {
-    put("/createOrUpdateUser") {
-        val user = call.receive<User>()
-        saveUserToDb(user)
-        call.respondText("Customer stored correctly", status = HttpStatusCode.Accepted)
+fun Route.getUsers() {
+    get("/user") {
+        call.respondText("List users to be implemented", status = HttpStatusCode.OK)
     }
 }
 
-fun Route.getUsers() {
-    get("/users") {
-        call.respondText("users")
+fun Route.getUser() {
+    get("/user") {
+        call.respondText("Get user by id to be implemented", status = HttpStatusCode.OK)
+    }
+}
+
+fun Route.createUser() {
+    post("/user") {
+        call.respondText("Create user to be implemented", status = HttpStatusCode.Accepted)
+    }
+}
+
+fun Route.updateUser() {
+    put("/user") {
+        call.respondText("Update user to be implemented", status = HttpStatusCode.Accepted)
+    }
+}
+
+fun Route.deleteUser() {
+    delete("/user") {
+        call.respondText("Delete user to be implemented", status = HttpStatusCode.Accepted)
     }
 }
 
 fun Application.registerUserRoutes() {
     routing {
-        createOrUpdateUser()
         getUsers()
+        getUser()
+        createUser()
+        updateUser()
+        deleteUser()
     }
 }
