@@ -1,16 +1,10 @@
 package com.augenss.persistence
 
-import com.augenss.model.Users
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
+import java.sql.DriverManager
 
-fun connectToDb() {
-    Database.connect("jdbc:sqlite:database/data.db", "org.sqlite.JDBC") // TODO: datasource to enable connection pooling
-}
-
-fun createDbTables() {
-    transaction {
-        SchemaUtils.create(Users)
-    }
+fun connectToDb(filename: String) { // TODO: make it configurable, so it's testable
+    val url = "jdbc:sqlite:database/$filename"
+    Database.connect({DriverManager.getConnection(url)})
+    createUsersTable()
 }
