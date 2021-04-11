@@ -1,26 +1,58 @@
 package com.augenss.persistence
 
-import com.augenss.model.Users
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.selectAll
+import com.augenss.dao.UserDao
+import com.augenss.dao.UsersTable
+import com.augenss.dto.UserDto
+import com.augenss.model.User
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 
 fun createUsersTable() {
     transaction {
-        SchemaUtils.create(Users)
+        SchemaUtils.create(UsersTable)
     }
 }
 
-fun saveUserToDb() {
+fun getUsersFromDb(): List<User> {
+    return transaction {
+        UserDao.all().toList().map { it.toUser() }
+    }
+}
+
+fun getUserFromDb(id: Int): UserDao? {
+    return transaction {
+        UserDao.findById(id)
+    }
+}
+
+fun saveUserToDb(userDto: UserDto) {
     transaction {
-        val userId = Users.insertAndGetId {
-            it[username] = "testusername"
-            it[password] = "testpswd"
-            it[name] = "testname"
-//            it[surname] = user.surname //TODO: what to do with optional fields?
+        val userDao = UserDao.new {
+            username = userDto.username
+            password = userDto.password
+            name = userDto.name
+            surname = userDto.surname
         }
-        println("Users: ${Users.selectAll()}")
+        println("Added user " + userDao.username)
+    }
+}
+
+fun updateUserInDb(userDto: UserDto) {
+    requireNotNull(userDto.id)
+    val userDao = getUserFromDb(userDto.id)
+    requireNotNull(userDao)
+    transaction {
+        userDao.username = userDto.username
+        userDao.password = userDto.password
+        userDao.name = userDto.name
+        userDao.surname = userDto.surname
+    }
+    println("Updated user " + userDto.username)
+}
+
+fun deleteUserFromDb(id: Int) {
+    val userDao = getUserFromDb(id)
+    transaction {
+        userDao?.delete()
     }
 }

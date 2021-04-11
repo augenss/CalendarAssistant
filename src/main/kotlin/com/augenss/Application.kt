@@ -1,8 +1,7 @@
 package com.augenss
 
 import com.augenss.persistence.connectToDb
-import com.augenss.persistence.createUsersTable
-import com.augenss.persistence.saveUserToDb
+import com.augenss.persistence.setupDb
 import com.augenss.routes.registerUserRoutes
 import io.ktor.application.*
 import io.ktor.features.*
@@ -16,4 +15,5 @@ fun Application.module(testing: Boolean = false) {
     }
     registerUserRoutes()
     connectToDb("calendarassistant.db")
+    setupDb()
 }
