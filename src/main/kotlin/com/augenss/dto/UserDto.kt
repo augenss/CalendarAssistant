@@ -1,5 +1,6 @@
 package com.augenss.dto
 
+import com.augenss.model.User
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -10,3 +11,6 @@ data class UserDto(
         val name: String,
         val surname: String? = null
 )
+{
+    fun toUser(): User = User(username, password, name, surname)
+}
