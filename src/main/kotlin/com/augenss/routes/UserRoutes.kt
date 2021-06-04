@@ -1,10 +1,10 @@
 package com.augenss.routes
 
 import com.augenss.dto.UserDto
-import com.augenss.persistence.deleteUserFromDb
-import com.augenss.persistence.getUsersFromDb
-import com.augenss.persistence.saveUserToDb
-import com.augenss.persistence.updateUserInDb
+import com.augenss.persistence.repository.deleteUserFromDb
+import com.augenss.persistence.repository.getUsersFromDb
+import com.augenss.persistence.repository.saveUserToDb
+import com.augenss.persistence.repository.updateUserInDb
 import io.ktor.application.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -22,28 +22,28 @@ fun Application.registerUserRoutes() {
 }
 
 fun Route.getUsers() {
-    get("/user") {
+    get("/users") {
         val users = getUsersFromDb().map { it.toUserDto() }
         call.respond(users)
     }
 }
 
 fun Route.getUser() {
-    get("/user/{id}") {
+    get("/users/{id}") {
         call.respondText("Get user by id to be implemented", status = HttpStatusCode.OK)
     }
 }
 
 fun Route.createUser() {
-    post("/user") {
+    post("/users") {
         val userDto = call.receive<UserDto>()
         saveUserToDb(userDto)
-        call.respondText("User ${userDto.username} created", status = HttpStatusCode.Accepted)
+        call.respondText("User ${userDto.username} created", status = HttpStatusCode.Created)
     }
 }
 
 fun Route.updateUser() {
-    put("/user") {
+    put("/users") {
         val userDto = call.receive<UserDto>()
         updateUserInDb(userDto)
         call.respondText("User ${userDto.username} updated", status = HttpStatusCode.OK)
@@ -51,7 +51,7 @@ fun Route.updateUser() {
 }
 
 fun Route.deleteUser() {
-    delete("/user") {
+    delete("/users") {
         val userId = call.receive<Int>()
         deleteUserFromDb(userId)
         call.respondText("User deleted", status = HttpStatusCode.OK)

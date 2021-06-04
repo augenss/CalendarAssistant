@@ -10,8 +10,7 @@ data class User(
         val surname: String?
 )
 {
-    fun toUserDto(): UserDto = UserDto(id.raw, username, password, name, surname)
-    // fun hashPassword()
+    fun toUserDto(): UserDto = UserDto(id?.raw, username, password, name, surname)
 }
 
 data class UserId(val raw: Int)
