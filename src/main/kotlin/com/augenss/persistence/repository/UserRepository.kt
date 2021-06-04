@@ -33,7 +33,7 @@ fun saveUserToDb(userDto: UserDto) {
             name = userDto.name
             surname = userDto.surname
         }
-        println("Added user " + userDao.username)
+        println("Added user " + userDao.username) // TODO: fix this prints also when error, like users table doesn't exist
     }
 }
 
