@@ -1,4 +1,4 @@
-package com.augenss.persistence
+package com.augenss.persistence.repository
 
 import com.augenss.dao.UserDao
 import com.augenss.dao.UsersTable
