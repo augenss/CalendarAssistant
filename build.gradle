@@ -29,6 +29,7 @@ dependencies {
     implementation group: 'org.jetbrains.exposed', name: 'exposed-java-time', version: '0.30.2'
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     testImplementation group: 'com.h2database', name: 'h2', version: '1.4.200'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.0.0'
 }
 
 testSets {
