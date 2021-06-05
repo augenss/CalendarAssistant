@@ -1,4 +1,4 @@
-package com.augenss.persistence
+package com.augenss.persistence.repository
 
 import com.augenss.dao.UserDao
 import com.augenss.dao.UsersTable
@@ -19,27 +19,36 @@ fun getUsersFromDb(): List<User> {
     }
 }
 
-fun getUserFromDb(id: Int): UserDao? {
+fun getUserById(id: Int): UserDao? {
     return transaction {
         UserDao.findById(id)
     }
 }
 
-fun saveUserToDb(userDto: UserDto) {
+// TODO:
+//fun getUserByUsername(username: String): UserDao? {
+//    transaction {
+//         // sql query? lub jest jakas metoda juz do tego bez potrzeby definiowania sqla? albo jakies query sie definiuje wg api?
+//    }
+//}
+
+fun saveUserToDb(userDto: UserDto): User? {
+    var user: User? = null
     transaction {
-        val userDao = UserDao.new {
+        user = UserDao.new {
             username = userDto.username
             password = userDto.password
             name = userDto.name
             surname = userDto.surname
-        }
-        println("Added user " + userDao.username)
+        }.toUser()
+        println("Added user " + user?.username) // TODO: fix this prints also when error, like users table doesn't exist
     }
+    return user
 }
 
 fun updateUserInDb(userDto: UserDto) {
     requireNotNull(userDto.id)
-    val userDao = getUserFromDb(userDto.id)
+    val userDao = getUserById(userDto.id)
     requireNotNull(userDao)
     transaction {
         userDao.username = userDto.username
@@ -51,7 +60,7 @@ fun updateUserInDb(userDto: UserDto) {
 }
 
 fun deleteUserFromDb(id: Int) {
-    val userDao = getUserFromDb(id)
+    val userDao = getUserById(id)
     transaction {
         userDao?.delete()
     }
