@@ -2,12 +2,10 @@ package com.augenss.repository
 
 import com.augenss.dto.UserDto
 import com.augenss.model.User
-import com.augenss.persistence.repository.createUsersTable
-import com.augenss.persistence.repository.getUserById
-import com.augenss.persistence.repository.saveUserToDb
-import com.augenss.persistence.repository.updateUserInDb
+import com.augenss.persistence.repository.*
 import org.junit.Test
 import kotlin.test.assertNotNull
+import kotlin.test.assertNull
 
 // runs tests from last to first?
 // looks like it
@@ -33,6 +31,7 @@ class UserRepoTest {
         assert(userDtoWithId.toUser() == user)
     }
 
+    // TODO: make parametrized test for username, password, name and surname update
     @Test
     fun shouldUpdateUsernameOfUserInDb() {
         connectToH2()
@@ -48,5 +47,17 @@ class UserRepoTest {
         val userUpdated = getUserById(userId)?.toUser()
         assertNotNull(userUpdated)
         assert(userDtoUpdated.toUser() == userUpdated)
+    }
+
+    @Test
+    fun shouldDeleteUserFromDb() {
+        connectToH2()
+        createUsersTable()
+        val user = saveUserToDb(testUserDto)
+        assertNotNull(user)
+        val userId = user.id?.raw
+        assertNotNull(userId)
+        deleteUserFromDb(userId)
+        assertNull(getUserById(userId))
     }
 }

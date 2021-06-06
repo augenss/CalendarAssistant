@@ -19,18 +19,12 @@ fun getUsersFromDb(): List<User> {
     }
 }
 
+// this probably should return User, not UserDao ?
 fun getUserById(id: Int): UserDao? {
     return transaction {
         UserDao.findById(id)
     }
 }
-
-// TODO:
-//fun getUserByUsername(username: String): UserDao? {
-//    transaction {
-//         // sql query? lub jest jakas metoda juz do tego bez potrzeby definiowania sqla? albo jakies query sie definiuje wg api?
-//    }
-//}
 
 fun saveUserToDb(userDto: UserDto): User? {
     var user: User? = null
