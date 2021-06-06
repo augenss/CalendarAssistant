@@ -1,0 +1,1 @@
+Before running, add **database** directory in the project root directory.
